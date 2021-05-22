@@ -1,0 +1,65 @@
+---list employee number,last name, first name, sex and salary 
+select a.emp_id,a.l_name,a.f_name,a.sex,b.salary
+from employees a 
+join salaries b on a.emp_id=b.emp_id;
+
+----list first name, last name, and hire date for employees hired in 1986 
+
+
+select * 
+from employees
+where hire_date >= '1986-01-01' and hire_date <= '1986-12-31';
+
+--- list the manager of each department including dept. number, 
+---department name, manager's employee number, last name, and first name 
+
+select b.dept_id,c.dept_name,a.emp_id,a.l_name,a.f_name
+from employees a 
+join dept_manager b on a.emp_id = b.emp_id
+join "Departments" c 
+on c.dept_id = b.dept_id;
+
+---list department of each employee including employee number, last name,
+--first name and department name
+
+select a.dept_id,a.emp_id,c.l_name,c.f_name,b.dept_name
+from dept_employee a
+join "Departments" b
+on b.dept_id = a.dept_id
+join employees c 
+on c.emp_id = a.emp_id;
+
+---list first name, last name and sex for employees whose first name is "hercules" and last name
+--begins with "b"
+
+select f_name, l_name, sex 
+from employees 
+where f_name = 'Hercules' and l_name like 'B%';
+
+---list all employees in sales, include employee #, last name, first name, and dept.name 
+
+--created view for sales team
+create view sales_team as 
+(select a.emp_id, b.dept_name
+from dept_employee a
+join "Departments" b 
+on a.dept_id=b.dept_id
+where dept_name = 'Sales');
+
+--inspected view
+select * 
+from sales_team
+
+
+---joined employee with sales team to show wanted data 
+select a.emp_id,a.l_name,a.f_name,b.dept_name
+from employees a
+join sales_team b 
+on a.emp_id = b.emp_id;
+
+---in descending order, list the frequency count of employee last names 
+select count(l_name),l_name
+from employees 
+group by l_name 
+order by count(l_name) DESC; 
+
